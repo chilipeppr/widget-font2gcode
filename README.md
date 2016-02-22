@@ -137,7 +137,12 @@ other widgets know how to subscribe to them and what they do.</td></tr><tr valig
 other widgets know how to subscribe to them and what they do.</td></tr><tr valign="top"><td>foreignPublish</td><td>object</td><td>Please see docs above.<br><br>Document the foreign publish signals, i.e. signals owned by other widgets
 or elements, that this widget/element publishes to.</td></tr><tr valign="top"><td>foreignSubscribe</td><td>object</td><td>Please see docs above.<br><br>Document the foreign subscribe signals, i.e. signals owned by other widgets
 or elements, that this widget/element subscribes to.</td></tr><tr valign="top"><td>init</td><td>function</td><td>function () <br><br>All widgets should have an init method. It should be run by the
-instantiating code like a workspace or a different widget.</td></tr><tr valign="top"><td>init3d</td><td>function</td><td>function () <br><br>Try to get a reference to the 3D viewer.</td></tr><tr valign="top"><td>drawText</td><td>function</td><td>function () </td></tr><tr valign="top"><td>createText</td><td>function</td><td>function (text, options, callback) <br><br>Create text in Three.js.<br>
+instantiating code like a workspace or a different widget.</td></tr><tr valign="top"><td>init3d</td><td>function</td><td>function () <br><br>Try to get a reference to the 3D viewer.</td></tr><tr valign="top"><td>btnSetup</td><td>function</td><td>function () <br><br>Call this method from init to setup all the buttons when this widget
+is first loaded. This basically attaches click events to your 
+buttons. It also turns on all the bootstrap popovers by scanning
+the entire DOM of the widget.</td></tr><tr valign="top"><td>isChanging</td><td>boolean</td><td></td></tr><tr valign="top"><td>onChange</td><td>function</td><td>function () </td></tr><tr valign="top"><td>onRender</td><td>function</td><td>function (callback) </td></tr><tr valign="top"><td>getSettings</td><td>function</td><td>function () </td></tr><tr valign="top"><td>generateGcode</td><td>function</td><td>function () <br><br>Iterate over the text3d that was generated and create
+Gcode to mill/cut the three.js object.</td></tr><tr valign="top"><td>drawText</td><td>function</td><td>function (callback) <br><br>Draw the text to the 3D viewer based on the user settings
+in the widget.</td></tr><tr valign="top"><td>createText</td><td>function</td><td>function (text, options, callback) <br><br>Create text in Three.js.<br>
 Params: createText(text, options)<br>
 text - The text you want to render<br>
 options - a set of options to tweak the rendering<br><pre>
@@ -147,19 +152,9 @@ fontWeight: String. regular, bold
 size: Float. Size of the text.
 align: String. "left", "center"
 holes: Boolean. Whether to generate hole paths or not, like middle of a zero.
+dashed: Boolean. If true then every other line is rendered in wireframe, rather than solid lines.
 curveSegments: Integer. Number of points on the curves. Default is 12.
-}</pre></td></tr><tr valign="top"><td>loadFont</td><td>function</td><td>function (fontOpts, callback) </td></tr><tr valign="top"><td>makeText</td><td>function</td><td>function (vals) <br><br>Pass in vals {
-color: 0xff0000, // default 0x999999
-text: "asdf",
-height: 10, // default 1
-size: 5, // default 10
-x: 0,
-y: 0,
-z: 0,
-}</td></tr><tr valign="top"><td>drawtexterator</td><td>function</td><td>function () </td></tr><tr valign="top"><td>onInit3dSuccess</td><td>function</td><td>function () </td></tr><tr valign="top"><td>obj3d</td><td>object</td><td></td></tr><tr valign="top"><td>obj3dmeta</td><td>object</td><td></td></tr><tr valign="top"><td>userCallbackForGet3dObj</td><td>object</td><td></td></tr><tr valign="top"><td>get3dObj</td><td>function</td><td>function (callback) </td></tr><tr valign="top"><td>get3dObjCallback</td><td>function</td><td>function (data, meta) </td></tr><tr valign="top"><td>is3dViewerReady</td><td>boolean</td><td></td></tr><tr valign="top"><td>clear3dViewer</td><td>function</td><td>function () </td></tr><tr valign="top"><td>mySceneGroup</td><td>object</td><td></td></tr><tr valign="top"><td>sceneReAddMySceneGroup</td><td>function</td><td>function () </td></tr><tr valign="top"><td>sceneRemoveMySceneGroup</td><td>function</td><td>function () </td></tr><tr valign="top"><td>btnSetup</td><td>function</td><td>function () <br><br>Call this method from init to setup all the buttons when this widget
-is first loaded. This basically attaches click events to your 
-buttons. It also turns on all the bootstrap popovers by scanning
-the entire DOM of the widget.</td></tr><tr valign="top"><td>onHelloBtnClick</td><td>function</td><td>function (evt) <br><br>onHelloBtnClick is an example of a button click event callback</td></tr><tr valign="top"><td>options</td><td>object</td><td>User options are available in this property for reference by your
+}</pre></td></tr><tr valign="top"><td>fontLoaded</td><td>object</td><td></td></tr><tr valign="top"><td>loadFont</td><td>function</td><td>function (fontOpts, callback) </td></tr><tr valign="top"><td>onInit3dSuccess</td><td>function</td><td>function () </td></tr><tr valign="top"><td>obj3d</td><td>object</td><td></td></tr><tr valign="top"><td>obj3dmeta</td><td>object</td><td></td></tr><tr valign="top"><td>userCallbackForGet3dObj</td><td>object</td><td></td></tr><tr valign="top"><td>get3dObj</td><td>function</td><td>function (callback) </td></tr><tr valign="top"><td>get3dObjCallback</td><td>function</td><td>function (data, meta) </td></tr><tr valign="top"><td>is3dViewerReady</td><td>boolean</td><td></td></tr><tr valign="top"><td>clear3dViewer</td><td>function</td><td>function () </td></tr><tr valign="top"><td>mySceneGroup</td><td>object</td><td></td></tr><tr valign="top"><td>sceneReAddMySceneGroup</td><td>function</td><td>function () </td></tr><tr valign="top"><td>sceneRemoveMySceneGroup</td><td>function</td><td>function () </td></tr><tr valign="top"><td>sceneDisposeMySceneGroup</td><td>function</td><td>function () </td></tr><tr valign="top"><td>onHelloBtnClick</td><td>function</td><td>function (evt) <br><br>onHelloBtnClick is an example of a button click event callback</td></tr><tr valign="top"><td>options</td><td>object</td><td>User options are available in this property for reference by your
 methods. If any change is made on these options, please call
 saveOptionsLocalStorage()</td></tr><tr valign="top"><td>setupUiFromLocalStorage</td><td>function</td><td>function () <br><br>Call this method on init to setup the UI by reading the user's
 stored settings from localStorage and then adjust the UI to reflect
