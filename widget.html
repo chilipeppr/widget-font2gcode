@@ -4,7 +4,9 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
-    <title><!--(auto-fill by runme.js--></title>
+    <title>
+        <!--(auto-fill by runme.js-->
+    </title>
 
     <!-- ChiliPeppr is based on bootstrap CSS. -->
     <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
@@ -55,36 +57,140 @@
 
         </div>
         <div class="panel-body">
-        
-            <form class="form-inline">
-                <div class="form-group">
-                    <div class="input-group">
-                        <input type="text" class="form-control" xstyle="margin-bottom:5px;" placeholder="Enter text to render" />
-                        <div class="input-group-addon" style="padding:0;">
-                            <button type="button" xstyle="border-radius:0; border:0;" class="btn btn-default btn-laserit">Render</button>
+
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="active"><a href="#com-zipwhip-widget-font2gcode-tab1" role="tab" data-toggle="tab">Render</a>
+                </li>
+                <li><a href="#com-zipwhip-widget-font2gcode-tab2" role="tab" data-toggle="tab">Gcode</a></li>
+                <!--<li><a href="#com-zipwhip-widget-font2gcode-tab3" role="tab" data-toggle="tab">Dispenser</a></li>-->
+                <!--<li><a href="#com-zipwhip-widget-font2gcode-tab4" role="tab" data-toggle="tab">Laser</a></li>-->
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+
+                <!-- Tab 1 -->
+                <div class="tab-pane active" id="com-zipwhip-widget-font2gcode-tab1">
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" class="form-control input-text" xstyle="margin-bottom:5px;" placeholder="Enter text to render" value="313-554-5702" />
+                            <div class="input-group-addon" style="padding:0;">
+                                <button type="button" xstyle="border-radius:0; border:0;" class="btn btn-default btn-render">Render</button>
+                            </div>
                         </div>
                     </div>
+
+                    <!--<div class="well">-->
+
+                        <p>Settings</p>
+
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon">Height</div>
+                                <input type="number" min="0" max="9999" step="1" class="form-control input-height" value="10" placeholder="Height">
+                                <div class="input-group-addon">mm</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <select class="form-control input-font">
+                                <option>helvetiker</option>
+                                <option>optimer</option>
+                                <option>gentilis</option>
+                                <option>droid/droid_sans</option>
+                                <option>droid/droid_serif</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="radio-inline">
+                                <input type="radio" name="com-chilipeppr-widget-font2gcode-fontweight" value="regular" checked> Regular
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="com-chilipeppr-widget-font2gcode-fontweight" value="bold"> Bold
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="radio-inline">
+                                <input type="radio" name="com-chilipeppr-widget-font2gcode-align" value="left" checked> Left
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="com-chilipeppr-widget-font2gcode-align" value="center"> Center
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="com-chilipeppr-widget-font2gcode-align" value="right"> Right
+                            </label>
+                        </div>
+
+                        <div class="checkbox">
+                            <label>
+                                <input class="input-holes" type="checkbox" value="1" checked> Generate holes
+                                <p style="font-size:10px;">For example, the path at the center of a 0</p>
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="radio-inline">
+                                <input type="radio" name="com-chilipeppr-widget-font2gcode-cut" value="solid"> Solid Cut
+                            </label>
+                            <br>
+                            <label class="radio-inline">
+                                <input type="radio" name="com-chilipeppr-widget-font2gcode-cut" value="dashed" checked> Dashed Cut
+                            </label>
+                            <div class="form-group" style="padding-left:18px;">
+                                <span style="font-size:11px;">Point Spacing</span>
+                                <div class="input-group">
+                                    <input type="number" min="1" max="99" step="1" class="form-control input-dashPercent" value="20" placeholder="Height">
+                                    <div class="input-group-addon">% of Height</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    <!--</div>-->
                 </div>
-            </form>
-        
-            <div class="input-group">
-              <div class="input-group-addon">Height</div>
-              <input type="text" class="form-control" value="10" placeholder="Height">
-              <div class="input-group-addon">mm</div>
-            </div>
-            
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" value="1" checked>
-                Generate holes, i.e. like center of a 0
-              </label>
-            </div>
-                
-            <button type="button" class="btn btn-default btn-sendgcodetows">Send Gcode to Workspace</button>
 
-            <p style="margin-top:10px;">Gcode</p>
-            <textarea class="form-control" rows="3"></textarea>
+                <!-- Tab 2 -->
+                <div class="tab-pane" id="com-zipwhip-widget-font2gcode-tab2">
 
+                    <div class="form-group">
+                        <p style="margin-bottom:0">Mode</p>
+                        <label class="radio-inline">
+                            <input type="radio" name="com-chilipeppr-widget-font2gcode-mode" value="laser" checked> Laser
+                        </label>
+                        <div class="form-group mode-laser" style="padding-left:20px;margin-bottom:0">
+                            <p style="margin-bottom:0;font-size:11px;">Turn Laser On With</p>
+                            <label class="radio-inline">
+                                <input type="radio" name="com-chilipeppr-widget-font2gcode-laseron" value="M3" checked> M3 (Spindle)
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="com-chilipeppr-widget-font2gcode-laseron" value="M7"> M7 (Coolant)
+                            </label>
+                        </div>
+                        <label class="radio-inline">
+                            <input type="radio" name="com-chilipeppr-widget-font2gcode-mode" value="mill"> Mill
+                        </label>
+                    </div>
+
+                    <div class="form-group" xstyle="padding-left:18px;">
+                        <span xstyle="font-size:11px;">Feedrate During Mill/Laser</span>
+                        <div class="input-group">
+                            <input type="number" min="0" max="50000" step="10" class="form-control input-feedrate" value="200" placeholder="Enter feedrate">
+                            <div class="input-group-addon">mm/min</div>
+                        </div>
+                    </div>
+
+
+                    <button type="button" class="btn btn-default btn-sendgcodetows">Send Gcode to Workspace</button>
+
+                    <p style="margin-top:10px;">Gcode</p>
+                    <textarea class="form-control gcode" rows="3"></textarea>
+
+                </div>
+                <!-- End Tab 2 -->
+            </div>
         </div>
     </div>
 </body>
