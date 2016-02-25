@@ -525,7 +525,7 @@ cpdefine("inline:com-zipwhip-widget-font2gcode", ["chilipeppr_ready", /* other d
     				    //console.log("ptCnt:", ptCnt);
     				    shape.autoClose = false;
     				    var spacedPoints = shape.createSpacedPointsGeometry( ptCnt );
-    				    //console.log("spacedPoints", spacedPoints);
+    				    console.log("spacedPoints", spacedPoints);
     				    
     				    // we need to generate a ton of lines
     				    // rather than one ongoing line
