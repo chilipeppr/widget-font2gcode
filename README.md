@@ -81,7 +81,26 @@ To better understand how ChiliPeppr's publish() method works see amplify.js's do
           </tr>
       </thead>
       <tbody>
-      <tr><td colspan="2">(No signals defined in this widget/element)</td></tr>    
+      <tr valign="top"><td>/com-zipwhip-widget-font2gcode/getGcode</td><td>This is a powerful signal that you can send into this widget to ask
+for Gcode from the widget for a font rendering. You can pass in all parameters you see in the UI
+as options to this call. You should provide a callback method as well so this widget can call
+back that method with the final Gcode based on the parameters you asked for.
+<br>
+Example:
+<br>
+Pass in {
+    text: "my text",
+    height: 10, // mm. (float)
+    fontName: "helvetiker", // helvetiker, optimer, gentilis, droid/droid_sans, droid/droid_serif
+    fontWeight: "bold", // regular, bold
+    align: "left", // left, center, right
+    holes: true, // false (boolean)
+    cut: "solid", // solid, dashed
+    dashPercent: 20, // integer from 0 to 100
+    mode: "laser", // laser, mill
+    laseron: "m3", // m3, m7
+    feedrate<br><br>}
+</td></tr>    
       </tbody>
   </table>
 
@@ -136,8 +155,16 @@ The table below shows, in order, the methods and properties inside the widget/el
 other widgets know how to subscribe to them and what they do.</td></tr><tr valign="top"><td>subscribe</td><td>object</td><td>Please see docs above.<br><br>Define the subscribe signals that this widget/element owns or defines so that
 other widgets know how to subscribe to them and what they do.</td></tr><tr valign="top"><td>foreignPublish</td><td>object</td><td>Please see docs above.<br><br>Document the foreign publish signals, i.e. signals owned by other widgets
 or elements, that this widget/element publishes to.</td></tr><tr valign="top"><td>foreignSubscribe</td><td>object</td><td>Please see docs above.<br><br>Document the foreign subscribe signals, i.e. signals owned by other widgets
-or elements, that this widget/element subscribes to.</td></tr><tr valign="top"><td>init</td><td>function</td><td>function () <br><br>All widgets should have an init method. It should be run by the
-instantiating code like a workspace or a different widget.</td></tr><tr valign="top"><td>init3d</td><td>function</td><td>function () <br><br>Try to get a reference to the 3D viewer.</td></tr><tr valign="top"><td>btnSetup</td><td>function</td><td>function () <br><br>Call this method from init to setup all the buttons when this widget
+or elements, that this widget/element subscribes to.</td></tr><tr valign="top"><td>isSilent</td><td>boolean</td><td></td></tr><tr valign="top"><td>init</td><td>function</td><td>function (opts) <br><br>All widgets should have an init method. It should be run by the
+instantiating code like a workspace or a different widget.
+You can pass init options in.
+If you set silent to true then the widget will not render any information
+to the 3D viewer, rather you can make pubsub calls to the widget instead
+to get info like Gcode for your text without having it render. That way you
+can do whatever you want with the Gcode.
+{
+silent: true, // default to false  
+}</td></tr><tr valign="top"><td>init3d</td><td>function</td><td>function (callback) <br><br>Try to get a reference to the 3D viewer.</td></tr><tr valign="top"><td>btnSetup</td><td>function</td><td>function () <br><br>Call this method from init to setup all the buttons when this widget
 is first loaded. This basically attaches click events to your 
 buttons. It also turns on all the bootstrap popovers by scanning
 the entire DOM of the widget.</td></tr><tr valign="top"><td>isChanging</td><td>boolean</td><td></td></tr><tr valign="top"><td>onChange</td><td>function</td><td>function () </td></tr><tr valign="top"><td>onRender</td><td>function</td><td>function (callback) </td></tr><tr valign="top"><td>getSettings</td><td>function</td><td>function () </td></tr><tr valign="top"><td>generateGcode</td><td>function</td><td>function () <br><br>Iterate over the text3d that was generated and create

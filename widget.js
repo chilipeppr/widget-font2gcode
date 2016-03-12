@@ -132,6 +132,29 @@ cpdefine("inline:com-zipwhip-widget-font2gcode", ["chilipeppr_ready", /* other d
             // Define a key:value pair here as strings to document what signals you subscribe to
             // so other widgets can publish to this widget to have it do something.
             // '/onExampleConsume': 'Example: This widget subscribe to this signal so other widgets can send to us and we'll do something with it.'
+        
+            '/getGcode' : `This is a powerful signal that you can send into this widget to ask
+for Gcode from the widget for a font rendering. You can pass in all parameters you see in the UI
+as options to this call. You should provide a callback method as well so this widget can call
+back that method with the final Gcode based on the parameters you asked for.
+<br>
+Example:
+<br>
+Pass in {
+    text: "my text",
+    height: 10, // mm. (float)
+    fontName: "helvetiker", // helvetiker, optimer, gentilis, droid/droid_sans, droid/droid_serif
+    fontWeight: "bold", // regular, bold
+    align: "left", // left, center, right
+    holes: true, // false (boolean)
+    cut: "solid", // solid, dashed
+    dashPercent: 20, // integer from 0 to 100
+    mode: "laser", // laser, mill
+    laseron: "m3", // m3, m7
+    feedrate
+    
+}
+`
         },
         /**
          * Document the foreign publish signals, i.e. signals owned by other widgets
@@ -154,15 +177,36 @@ cpdefine("inline:com-zipwhip-widget-font2gcode", ["chilipeppr_ready", /* other d
             "/com-chilipeppr-widget-3dviewer/recv3dObject" : "By subscribing to this we get the callback when we /request3dObject and thus we can grab the reference to the 3d object from the 3d viewer and do things like addScene() to it with our Three.js objects."
         },
         /**
+         * isSilent: true means we will not render anything to the 3D viewer.
+         */
+        isSilent: false,
+        /**
          * All widgets should have an init method. It should be run by the
          * instantiating code like a workspace or a different widget.
+         * You can pass init options in.
+         * If you set silent to true then the widget will not render any information
+         * to the 3D viewer, rather you can make pubsub calls to the widget instead
+         * to get info like Gcode for your text without having it render. That way you
+         * can do whatever you want with the Gcode.
+         * {
+             silent: true, // default to false  
+         * }
          */
-        init: function() {
+        init: function(opts) {
             console.log("I am being initted. Thanks.");
 
             this.setupUiFromLocalStorage();
 
-            this.init3d();
+            // see if they passed in options
+            if (opts && 'silent' in opts && opts.silent) {
+                console.log("user wants silent mode");
+                this.isSilent = true;
+                this.init3d(function() {
+                    console.log("initted 3d viewer in silent mode");
+                });
+            } else {
+                this.init3d();
+            }
             
             this.btnSetup();
             this.forkSetup();
@@ -172,7 +216,7 @@ cpdefine("inline:com-zipwhip-widget-font2gcode", ["chilipeppr_ready", /* other d
         /**
          * Try to get a reference to the 3D viewer.
          */
-        init3d: function () {
+        init3d: function (callback) {
             this.get3dObj();
             if (this.obj3d == null) {
                 console.log("loading 3d scene failed, try again in 1 second");
@@ -188,16 +232,28 @@ cpdefine("inline:com-zipwhip-widget-font2gcode", ["chilipeppr_ready", /* other d
                                 console.log("giving up on trying to get 3d");
                             } else {
                                 console.log("succeeded on getting 3d after attempts:", attempts);
-                                that.onInit3dSuccess();
+                                if (callback) {
+                                    callback();
+                                } else {
+                                    that.onInit3dSuccess();
+                                }
                             }
                         }, 5000);
                     } else {
                         console.log("succeeded on getting 3d after attempts:", attempts);
-                        that.onInit3dSuccess();
+                        if (callback) {
+                            callback();
+                        } else {
+                            that.onInit3dSuccess();
+                        }
                     }
                 }, 1000);
             } else {
-                this.onInit3dSuccess();
+                if (callback) {
+                    callback();
+                } else {
+                    this.onInit3dSuccess();
+                }
             }
 
         },
@@ -361,7 +417,7 @@ cpdefine("inline:com-zipwhip-widget-font2gcode", ["chilipeppr_ready", /* other d
                     
                     // turn off laser at end of line
                     if (that.options.laseron == "M3")
-                        g += "M6 (laser off)\n";
+                        g += "M5 (laser off)\n";
                     else
                         g += "M9 (laser off)\n";
                 }
@@ -862,6 +918,9 @@ cpdefine("inline:com-zipwhip-widget-font2gcode", ["chilipeppr_ready", /* other d
                 this.options.showBody = true;
                 this.saveOptionsLocalStorage();
             }
+            // this will send an artificial event letting other widgets know to resize
+            // themselves since this widget is now taking up more room since it's showing
+            $(window).trigger("resize");
         },
         /**
          * Hide the body of the panel.
@@ -880,6 +939,7 @@ cpdefine("inline:com-zipwhip-widget-font2gcode", ["chilipeppr_ready", /* other d
                 this.options.showBody = false;
                 this.saveOptionsLocalStorage();
             }
+            $(window).trigger("resize");
         },
         /**
          * This method loads the pubsubviewer widget which attaches to our 
