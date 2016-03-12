@@ -85,21 +85,22 @@ To better understand how ChiliPeppr's publish() method works see amplify.js's do
 for Gcode from the widget for a font rendering. You can pass in all parameters you see in the UI
 as options to this call. You should provide a callback method as well so this widget can call
 back that method with the final Gcode based on the parameters you asked for.
-<br><br><br>Example:
+<br>
+Example:
 <br>
 Pass in {<br>
     callback: yourmethod, // the method we will callback with gcode string.<br>
     text: "my text", // the text you want rendered<br>
     height: 10, // float. height in mm. defaults to 10.<br>
     fontName: "helvetiker", // helvetiker, optimer, gentilis, droid/droid_sans, droid/droid_serif. defaults to helvetiker.<br>
-    fontWeight: "bold", // regular, bold. defaults to regular.
-    align: "left", // left, center, right. defaults to left.
-    holes: true, // boolean. defaults to true.
-    cut: "solid", // solid, dashed. default to solid.
-    dashPercent: 20, // integer from 0 to 100. defaults to 20
-    mode: "laser", // laser, mill. defaults to laser.
-    laseron: "m3", // m3, m7. defaults to m3.
-    feedrate: 200, // integer. defaults to 200
+    fontWeight: "bold", // regular, bold. defaults to regular.<br>
+    align: "left", // left, center, right. defaults to left.<br>
+    holes: true, // boolean. defaults to true.<br>
+    cut: "solid", // solid, dashed. default to solid.<br>
+    dashPercent: 20, // integer from 0 to 100. defaults to 20<br>
+    mode: "laser", // laser, mill. defaults to laser.<br>
+    laseron: "m3", // m3, m7. defaults to m3.<br>
+    feedrate: 200, // integer. defaults to 200<br>
 }
 </td></tr>    
       </tbody>
