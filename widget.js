@@ -143,11 +143,11 @@ back that method with the final Gcode based on the parameters you asked for.
 <br>
 Example:
 <br>
-Pass in {
-    callback: yourmethod,
-    text: "my text",
-    height: 10, // mm. (float)
-    fontName: "helvetiker", // helvetiker, optimer, gentilis, droid/droid_sans, droid/droid_serif. defaults to helvetiker.
+Pass in {<br>
+    callback: yourmethod, // the method we will callback with gcode string.<br>
+    text: "my text", // the text you want rendered<br>
+    height: 10, // float. height in mm. defaults to 10.<br>
+    fontName: "helvetiker", // helvetiker, optimer, gentilis, droid/droid_sans, droid/droid_serif. defaults to helvetiker.<br>
     fontWeight: "bold", // regular, bold. defaults to regular.
     align: "left", // left, center, right. defaults to left.
     holes: true, // boolean. defaults to true.
