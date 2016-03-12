@@ -89,17 +89,19 @@ back that method with the final Gcode based on the parameters you asked for.
 Example:
 <br>
 Pass in {
+    callback: yourmethod,
     text: "my text",
     height: 10, // mm. (float)
-    fontName: "helvetiker", // helvetiker, optimer, gentilis, droid/droid_sans, droid/droid_serif
-    fontWeight: "bold", // regular, bold
-    align: "left", // left, center, right
-    holes: true, // false (boolean)
-    cut: "solid", // solid, dashed
-    dashPercent: 20, // integer from 0 to 100
-    mode: "laser", // laser, mill
-    laseron: "m3", // m3, m7
-    feedrate<br><br>}
+    fontName: "helvetiker", // helvetiker, optimer, gentilis, droid/droid_sans, droid/droid_serif. defaults to helvetiker.
+    fontWeight: "bold", // regular, bold. defaults to regular.
+    align: "left", // left, center, right. defaults to left.
+    holes: true, // boolean. defaults to true.
+    cut: "solid", // solid, dashed. default to solid.
+    dashPercent: 20, // integer from 0 to 100. defaults to 20
+    mode: "laser", // laser, mill. defaults to laser.
+    laseron: "m3", // m3, m7. defaults to m3.
+    feedrate: 200, // integer. defaults to 200
+}
 </td></tr>    
       </tbody>
   </table>
@@ -164,7 +166,22 @@ to get info like Gcode for your text without having it render. That way you
 can do whatever you want with the Gcode.
 {
 silent: true, // default to false  
-}</td></tr><tr valign="top"><td>init3d</td><td>function</td><td>function (callback) <br><br>Try to get a reference to the 3D viewer.</td></tr><tr valign="top"><td>btnSetup</td><td>function</td><td>function () <br><br>Call this method from init to setup all the buttons when this widget
+}</td></tr><tr valign="top"><td>init3d</td><td>function</td><td>function (callback) <br><br>Try to get a reference to the 3D viewer.</td></tr><tr valign="top"><td>setupPubSub</td><td>function</td><td>function () <br><br>Setup the signals that can be published to this widget so other widgets/users
+can interact with our functionality.</td></tr><tr valign="top"><td>getGcode</td><td>function</td><td>function (opts) <br><br>getGcode method attached the /getGcode pubsub method.
+Pass in {
+callback: yourmethod,
+text: "my text",
+height: 10, // mm. (float)
+fontName: "helvetiker", // helvetiker, optimer, gentilis, droid/droid_sans, droid/droid_serif. defaults to helvetiker.
+fontWeight: "bold", // regular, bold. defaults to regular.
+align: "left", // left, center, right. defaults to left.
+holes: true, // boolean. defaults to true.
+cut: "solid", // solid, dashed. default to solid.
+dashPercent: 20, // integer from 0 to 100. defaults to 20
+mode: "laser", // laser, mill. defaults to laser.
+laseron: "m3", // m3, m7. defaults to m3.
+feedrate: 200, // integer. defaults to 200
+}</td></tr><tr valign="top"><td>btnSetup</td><td>function</td><td>function () <br><br>Call this method from init to setup all the buttons when this widget
 is first loaded. This basically attaches click events to your 
 buttons. It also turns on all the bootstrap popovers by scanning
 the entire DOM of the widget.</td></tr><tr valign="top"><td>isChanging</td><td>boolean</td><td></td></tr><tr valign="top"><td>onChange</td><td>function</td><td>function () </td></tr><tr valign="top"><td>onRender</td><td>function</td><td>function (callback) </td></tr><tr valign="top"><td>getSettings</td><td>function</td><td>function () </td></tr><tr valign="top"><td>generateGcode</td><td>function</td><td>function () <br><br>Iterate over the text3d that was generated and create

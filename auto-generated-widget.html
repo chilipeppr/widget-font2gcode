@@ -113,7 +113,7 @@ cprequire_test(["inline:com-zipwhip-widget-font2gcode"], function(myWidget) {
             
             // only init eagle widget once 3d is loaded
             // init my widget
-            myWidget.init();
+            //myWidget.init();
         });
     });
 
@@ -134,6 +134,9 @@ cprequire_test(["inline:com-zipwhip-widget-font2gcode"], function(myWidget) {
     $('#' + myWidget.id).css('margin', '20px');
     $('title').html(myWidget.name);
     // $('#' + myWidget.id).css('background', 'none');
+    
+    //myWidget.init();
+    myWidget.init({silent:true});
 
 } /*end_test*/ );
 
@@ -180,18 +183,18 @@ back that method with the final Gcode based on the parameters you asked for.
 Example:
 <br>
 Pass in {
+    callback: yourmethod,
     text: "my text",
     height: 10, // mm. (float)
-    fontName: "helvetiker", // helvetiker, optimer, gentilis, droid/droid_sans, droid/droid_serif
-    fontWeight: "bold", // regular, bold
-    align: "left", // left, center, right
-    holes: true, // false (boolean)
-    cut: "solid", // solid, dashed
-    dashPercent: 20, // integer from 0 to 100
-    mode: "laser", // laser, mill
-    laseron: "m3", // m3, m7
-    feedrate
-    
+    fontName: "helvetiker", // helvetiker, optimer, gentilis, droid/droid_sans, droid/droid_serif. defaults to helvetiker.
+    fontWeight: "bold", // regular, bold. defaults to regular.
+    align: "left", // left, center, right. defaults to left.
+    holes: true, // boolean. defaults to true.
+    cut: "solid", // solid, dashed. default to solid.
+    dashPercent: 20, // integer from 0 to 100. defaults to 20
+    mode: "laser", // laser, mill. defaults to laser.
+    laseron: "m3", // m3, m7. defaults to m3.
+    feedrate: 200, // integer. defaults to 200
 }
 `
         },
@@ -295,6 +298,33 @@ Pass in {
                 }
             }
 
+        },
+        /**
+         * Setup the signals that can be published to this widget so other widgets/users
+         * can interact with our functionality.
+         */
+        setupPubSub: function() {
+            chilipeppr.subscribe("/" + this.id + "/getGcode", this, this.getGcode);
+        },
+        /**
+         * getGcode method attached the /getGcode pubsub method.
+         * Pass in {
+                callback: yourmethod,
+                text: "my text",
+                height: 10, // mm. (float)
+                fontName: "helvetiker", // helvetiker, optimer, gentilis, droid/droid_sans, droid/droid_serif. defaults to helvetiker.
+                fontWeight: "bold", // regular, bold. defaults to regular.
+                align: "left", // left, center, right. defaults to left.
+                holes: true, // boolean. defaults to true.
+                cut: "solid", // solid, dashed. default to solid.
+                dashPercent: 20, // integer from 0 to 100. defaults to 20
+                mode: "laser", // laser, mill. defaults to laser.
+                laseron: "m3", // m3, m7. defaults to m3.
+                feedrate: 200, // integer. defaults to 200
+            }
+         */
+        getGcode: function(opts) {
+            
         },
         /**
          * Call this method from init to setup all the buttons when this widget
@@ -843,10 +873,16 @@ Pass in {
         },
         mySceneGroup: null,
         sceneReAddMySceneGroup: function() {
-            if (this.obj3d && this.mySceneGroup) {
-                this.obj3d.add(this.mySceneGroup);
+            
+            // check if silent or not. if silent then don't actually add anything
+            if (this.isSilent) {
+                console.log("being asked to sceneReAddMySceneGroup but in silent mode, so skipping");
+            } else {
+                if (this.obj3d && this.mySceneGroup) {
+                    this.obj3d.add(this.mySceneGroup);
+                }
+                this.obj3dmeta.widget.wakeAnimate();
             }
-            this.obj3dmeta.widget.wakeAnimate();
         },
         sceneRemoveMySceneGroup: function() {
             if (this.obj3d && this.mySceneGroup) {
