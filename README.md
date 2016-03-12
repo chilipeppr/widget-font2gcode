@@ -85,8 +85,7 @@ To better understand how ChiliPeppr's publish() method works see amplify.js's do
 for Gcode from the widget for a font rendering. You can pass in all parameters you see in the UI
 as options to this call. You should provide a callback method as well so this widget can call
 back that method with the final Gcode based on the parameters you asked for.
-<br>
-Example:
+<br><br><br>Example:
 <br>
 Pass in {<br>
     callback: yourmethod, // the method we will callback with gcode string.<br>
