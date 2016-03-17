@@ -421,7 +421,7 @@ Pass in {<br>
                 
                 that.generateGcode();
                 
-                if (callback) callback();
+                if (callback && typeof callback === "function") callback();
             });    
         },
         getSettings: function() {
@@ -437,6 +437,11 @@ Pass in {<br>
             this.options["mode"] = $('#' + this.id + ' input[name=com-chilipeppr-widget-font2gcode-mode]:checked').val();
             this.options["laseron"] = $('#' + this.id + ' input[name=com-chilipeppr-widget-font2gcode-laseron]:checked').val();
             this.options["feedrate"] = $('#' + this.id + ' .input-feedrate').val();
+            
+            // alignment values
+            this.options["xoffset"] = parseFloat($('#' + this.id + ' .input-x').val());
+            this.options["yoffset"] = parseFloat($('#' + this.id + ' .input-y').val());
+            
             console.log("settings:", this.options);    
             
             if (this.options.mode == "laser") {
@@ -542,12 +547,23 @@ Pass in {<br>
                 align: this.options.align, // "center", // left or center
                 dashed: this.options.cut == "dashed" ? true : false,
                 dashPercent: this.options.dashPercent,
+                xoffset: this.options.xoffset,
+                yoffset: this.options.yoffset,
             };
             
             this.createText(txt, settings, function(txt3d) {
                 console.log("text is created. txt3d:", txt3d);
                 txt3d.userData["text"] = txt;
                 txt3d.userData["settings"] = settings;
+                
+                // now set x and y offset to the top-most group
+                // this will mean we have a textGroup position x/y/rotation
+                // and a parent group position so when rendering localToWorld() for
+                // the final gcode you'll have to apply localToWorld for main parent
+                // and for textGroup.
+                txt3d.position.x = settings.xoffset;
+                txt3d.position.y = settings.yoffset;
+                
                 that.mySceneGroup = txt3d;
                 that.sceneReAddMySceneGroup();
                 //chilipeppr.publish('/com-chilipeppr-widget-3dviewer/viewextents' );
@@ -720,19 +736,19 @@ Pass in {<br>
     				// see if there are holes
     				if (opts.holes) {
         				for (var i2 in shape.holes) {
-        				    var shape = shape.holes[i2];
-        				    shape.autoClose = true;
-            				var points = shape.createPointsGeometry();
+        				    var holeShape = shape.holes[i2];
+        				    holeShape.autoClose = true;
+            				var points = holeShape.createPointsGeometry();
             				
             				if (opts.dashed) {
             				    // we need to generate a ton of lines
             				    // rather than one ongoing line
             				    //console.log("not implemented dashed holes yet");
             				    
-            				    var ptCnt = shape.getLength() / (opts.size / percentOfFontHeight);
+            				    var ptCnt = holeShape.getLength() / (opts.size / percentOfFontHeight);
             				    //console.log("ptCnt:", ptCnt);
-            				    shape.autoClose = false;
-            				    var spacedPoints = shape.createSpacedPointsGeometry( ptCnt );
+            				    holeShape.autoClose = false;
+            				    var spacedPoints = holeShape.createSpacedPointsGeometry( ptCnt );
             				    //console.log("spacedPoints", spacedPoints);
             				    
             				    // we need to generate a ton of lines
@@ -808,6 +824,7 @@ Pass in {<br>
     			textGroup.rotation.y = Math.PI * 2;
                 
 				//console.log("textGroup:", textGroup);
+
 
     			group.add( textGroup );
     

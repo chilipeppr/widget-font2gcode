@@ -1,7 +1,8 @@
 /* CSS for ChiliPeppr Widget */
 
-#com-zipwhip-widget-font2gcode {
-   
+#com-zipwhip-widget-font2gcode .panel-body {
+   max-height:350px;
+   overflow:auto;
 }
 
 #com-zipwhip-widget-font2gcode .nav-tabs>li>a {
