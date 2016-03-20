@@ -525,6 +525,10 @@ Pass in {<br>
             worldObj.updateMatrixWorld();
 
             var that = this;
+            var isLaserOn = false;
+            var isAtClearanceHeight = false;
+            var isFeedrateSpecifiedAlready = false;
+            
             grp.traverse( function(child) {
                 if (child.type == "Line") {
                     // let's create gcode for all points in line
@@ -533,27 +537,86 @@ Pass in {<br>
                         //var worldPt = localPt.clone();
                         //worldPt.setFromMatrixPosition( child.matrixWorld );
                         var worldPt = worldObj.localToWorld(localPt.clone());
+                        
                         if (i == 0) {
-                            // first point in line where we start lasering
-                            // move to poing
+                            // first point in line where we start lasering/milling
+                            // move to point
+                            
+                            // if milling, we need to move to clearance height
+                            if (that.options.mode == "mill") {
+                                if (!isAtClearanceHeight) {
+                                    g += "G0 Z" + that.options.millclearanceheight + "\n";
+                                }
+                            }
+                            
+                            // move to start point
                             g += "G0 X" + worldPt.x.toFixed(3) + 
                                 " Y" + worldPt.y.toFixed(3) + "\n";
-                            // set feedrate for subsequent G1 moves
-                            //g += "F" + that.options.feedrate + "\n";
+                            
+                            // if milling move back to depth cut
+                            if (that.options.mode == "mill") {
+                                var halfDistance = (that.options.millclearanceheight - that.options.milldepthcut) / 2;
+                                g += "G0 Z" + (that.options.millclearanceheight - halfDistance).toFixed(3)
+                                    + "\n";
+                                g += "G1 F" + that.options.millfeedrateplunge + 
+                                    " Z" + that.options.milldepthcut + "\n";
+                                isAtClearanceHeight = false;
+                            }
                         }
                         else {
-                            g += that.options.laseron + " (laser on)\n";
-                            g += "G1 F" + that.options.feedrate + 
+                            // we are in a non-first line so this is normal moving
+                            
+                            // see if laser or milling
+                            if (that.options.mode == "laser") {
+                                
+                                // if the laser is not on, we need to turn it on
+                                if (!isLaserOn) {
+                                    if (that.options.laseron == "M3") {
+                                        g += "M3"; // S" + that.options.lasersvalue;
+                                    } else {
+                                        g += that.options.laseron;
+                                    }
+                                    g += " (laser on)\n";
+                                    isLaserOn = true;
+                                }
+                            } else {
+                                // this is milling. if we are not at depth cut
+                                // we need to get there
+                                
+                                
+                            }
+                            
+                            // do normal feedrate move
+                            var feedrate;
+                            if (isFeedrateSpecifiedAlready) {
+                                feedrate = "";
+                            } else {
+                                feedrate = " F" + that.options.feedrate;
+                                isFeedrateSpecifiedAlready = true;
+                            }
+                            g += "G1" + feedrate + 
                                 " X" + worldPt.x.toFixed(3) + 
                                 " Y" + worldPt.y.toFixed(3) + "\n";
                         }
                     }
                     
-                    // turn off laser at end of line
-                    if (that.options.laseron == "M3")
-                        g += "M5 (laser off)\n";
-                    else
-                        g += "M9 (laser off)\n";
+                    // make feedrate have to get specified again on next line
+                    // if there is one
+                    isFeedrateSpecifiedAlready = false;
+                    
+                    // see if laser or milling
+                    if (that.options.mode == "laser") {
+                        // turn off laser at end of line
+                        isLaserOn = false;
+                        if (that.options.laseron == "M3")
+                            g += "M5 (laser off)\n";
+                        else
+                            g += "M9 (laser off)\n";
+                    } else {
+                        // milling. move back to clearance height
+                        g += "G0 Z" + that.options.millclearanceheight + "\n";
+                        isAtClearanceHeight = true;
+                    }
                 }
             });
 
@@ -1625,7 +1688,7 @@ Pass in {<br>
                     <button type="button" class="btn btn-default btn-sendgcodetows">Send Gcode to Workspace</button>
 
                     <p style="margin-top:10px;">Gcode</p>
-                    <textarea class="form-control gcode" rows="3"></textarea>
+                    <textarea class="form-control gcode" rows="3" spellcheck="false"></textarea>
 
                 </div>
                 <!-- End Tab 2 -->
