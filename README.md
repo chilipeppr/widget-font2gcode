@@ -91,7 +91,7 @@ Example:
 Pass in {<br>
     callback: yourmethod, // the method we will callback with gcode string.<br>
     text: "my text", // the text you want rendered<br>
-    height: 10, // float. height in mm. defaults to 10.<br>
+    size: 10, // float. size as height in mm. defaults to 10.<br>
     fontName: "helvetiker", // helvetiker, optimer, gentilis, droid/droid_sans, droid/droid_serif. defaults to helvetiker.<br>
     fontWeight: "bold", // regular, bold. defaults to regular.<br>
     align: "left", // left, center, right. defaults to left.<br>
@@ -171,7 +171,7 @@ can interact with our functionality.</td></tr><tr valign="top"><td>getGcode</td>
 Pass in {
 callback: yourmethod,
 text: "my text",
-height: 10, // mm. (float)
+size: 10, // mm. (float) Height of text.
 fontName: "helvetiker", // helvetiker, optimer, gentilis, droid/droid_sans, droid/droid_serif. defaults to helvetiker.
 fontWeight: "bold", // regular, bold. defaults to regular.
 align: "left", // left, center, right. defaults to left.
@@ -193,7 +193,7 @@ options - a set of options to tweak the rendering<br><pre>
 {
 fontName : String. helvetiker, optimer, gentilis, droid sans, droid serif
 fontWeight: String. regular, bold
-size: Float. Size of the text.
+size: Float. Size of the text as in the height.
 align: String. "left", "center"
 holes: Boolean. Whether to generate hole paths or not, like middle of a zero.
 dashed: Boolean. If true then every other line is rendered in wireframe, rather than solid lines.
