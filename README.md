@@ -166,7 +166,7 @@ to get info like Gcode for your text without having it render. That way you
 can do whatever you want with the Gcode.
 {
 silent: true, // default to false  
-}</td></tr><tr valign="top"><td>init3d</td><td>function</td><td>function (callback) <br><br>Try to get a reference to the 3D viewer.</td></tr><tr valign="top"><td>setupPubSub</td><td>function</td><td>function () <br><br>Setup the signals that can be published to this widget so other widgets/users
+}</td></tr><tr valign="top"><td>isActivated</td><td>boolean</td><td></td></tr><tr valign="top"><td>activate</td><td>function</td><td>function () <br><br>Called by the workspace to activate this widget.</td></tr><tr valign="top"><td>unactivate</td><td>function</td><td>function () <br><br>Called by the workspace to deactivate this widget.</td></tr><tr valign="top"><td>init3d</td><td>function</td><td>function (callback) <br><br>Try to get a reference to the 3D viewer.</td></tr><tr valign="top"><td>setupPubSub</td><td>function</td><td>function () <br><br>Setup the signals that can be published to this widget so other widgets/users
 can interact with our functionality.</td></tr><tr valign="top"><td>getGcode</td><td>function</td><td>function (opts) <br><br>getGcode method attached the /getGcode pubsub method.
 Pass in {
 callback: yourmethod,

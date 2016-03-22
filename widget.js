@@ -66,7 +66,7 @@ cprequire_test(["inline:com-zipwhip-widget-font2gcode"], function(myWidget) {
       function() {
         cprequire(['inline:com-chilipeppr-widget-3dviewer'], function (threed) {
             threed.init({
-                doMyOwnDragDrop: false
+                doMyOwnDragDrop: true
             });
             
             // hide toolbar for room
@@ -75,7 +75,8 @@ cprequire_test(["inline:com-zipwhip-widget-font2gcode"], function(myWidget) {
             // only init eagle widget once 3d is loaded
             // init my widget
             myWidget.init();
-            //myWidget.init({silent:true});
+            // myWidget.activate();
+            // myWidget.init({silent:true});
             testGetGcodePubSub();
         });
     });
@@ -220,6 +221,7 @@ Pass in {<br>
             this.setupUiFromLocalStorage();
 
             // see if they passed in options
+            /*
             if (opts && 'silent' in opts && opts.silent) {
                 console.log("user wants silent mode");
                 this.isSilent = true;
@@ -227,8 +229,12 @@ Pass in {<br>
                     console.log("initted 3d viewer in silent mode");
                 });
             } else {
-                this.init3d();
+                // this.init3d();
             }
+            */
+            this.init3d(function() {
+                console.log("initted 3d viewer but u must call activate to have text render in 3d viewer");
+            });
             
             this.setupPubSub();
             
@@ -237,6 +243,28 @@ Pass in {<br>
 
             console.log("I am done being initted.");
         },
+        isActivated: false,
+        /**
+         * Called by the workspace to activate this widget.
+         */
+        activate: function() {
+            if (!this.isActivated) {
+                console.log("was never activated before, initting 3d.");
+                this.clear3dViewer();
+                this.onRender();
+                this.isActivated = true;
+            }
+        },
+        /**
+         * Called by the workspace to deactivate this widget.
+         */
+        unactivate: function() {
+            this.sceneRemoveMySceneGroup();
+            this.sceneDisposeMySceneGroup();
+            // hide floaty menus
+            this.hideFloatItems();
+        },
+
         /**
          * Try to get a reference to the 3D viewer.
          */
