@@ -250,10 +250,12 @@ Pass in {<br>
         activate: function() {
             if (!this.isActivated) {
                 console.log("was never activated before, initting 3d.");
-                this.clear3dViewer();
-                this.onRender();
+                
                 this.isActivated = true;
             }
+            this.clear3dViewer();
+            this.onRender();
+            $(window).trigger("resize");
         },
         /**
          * Called by the workspace to deactivate this widget.
@@ -262,7 +264,8 @@ Pass in {<br>
             this.sceneRemoveMySceneGroup();
             this.sceneDisposeMySceneGroup();
             // hide floaty menus
-            this.hideFloatItems();
+            // this.hideFloatItems();
+            $(window).trigger("resize");
         },
 
         /**
