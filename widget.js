@@ -254,6 +254,7 @@ Pass in {<br>
                 this.isActivated = true;
             }
             this.clear3dViewer();
+            this.sceneReAddMySceneGroup();
             this.onRender();
             $(window).trigger("resize");
         },
