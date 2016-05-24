@@ -955,6 +955,7 @@ Pass in {<br>
             });
 
 		},
+		
 		fontLoaded: {},
 		loadFont: function(fontOpts, callback) {
 
@@ -979,7 +980,7 @@ Pass in {<br>
 				var that = this;
 
     			console.log("about to get font url:", url);
-    			debugger;
+    // 			debugger;
     			loader.load( url, function ( response ) {
     				var font = response;
     				console.log("loaded font:", font);
