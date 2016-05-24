@@ -110,7 +110,7 @@ cprequire_test(["inline:com-zipwhip-widget-font2gcode"], function(myWidget) {
             });
             
             // hide toolbar for room
-            $('#com-chilipeppr-widget-3dviewer .panel-heading').addClass("hidden");
+            // $('#com-chilipeppr-widget-3dviewer .panel-heading').addClass("hidden");
             
             // only init eagle widget once 3d is loaded
             // init my widget
@@ -795,7 +795,9 @@ Pass in {<br>
             //console.log("fontOpts:", fontOpts);
             
             this.loadFont(fontOpts, function(font) {
-                    
+                
+                console.log("got callback from loadFont. font:", font);
+                
                 // we have our font loaded, now we can render
                 opts.font = font;
                 
@@ -1002,21 +1004,25 @@ Pass in {<br>
 			// https://i2dcui.appspot.com/js/three/fonts/
 			var url = '' +
 			    //'https://i2dcui.appspot.com/js/three/fonts/' + 
-			    'https://i2dcui.appspot.com/slingshot?url=http://threejs.org/examples/fonts/' +
+			    //'https://i2dcui.appspot.com/slingshot?url=http://threejs.org/examples/fonts/' +
+			    'https://i2dcui.appspot.com/slingshot?url=https://raw.githubusercontent.com/mrdoob/three.js/master/examples/fonts/' +
 			    fontOpts.fontName + '_' + 
-			    fontOpts.fontWeight + '.typeface.js';
+			    fontOpts.fontWeight + 
+			 //   '.typeface.js';
+			    '.typeface.json';
 
             // see if font is loaded already
             if (url in this.fontLoaded) {
-                //console.warn("font already loaded. url:", url);
+                console.warn("font already loaded. url:", url);
                 callback(this.fontLoaded[url]);
             } else {
 				var that = this;
 
     			console.log("about to get font url:", url);
+    			debugger;
     			loader.load( url, function ( response ) {
     				var font = response;
-    				//console.log("loaded font:", font);
+    				console.log("loaded font:", font);
     				that.fontLoaded[url] = font;
     				callback(font);
     				//refreshText();
