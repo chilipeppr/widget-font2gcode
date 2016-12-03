@@ -27,6 +27,8 @@ requirejs.config({
         // Example of how to define the key (you make up the key) and the URL
         // Make sure you DO NOT put the .js at the end of the URL
         // SmoothieCharts: '//smoothiecharts.org/smoothie',
+        // Three: 'https://threejs.org/build/three'
+        // Three: 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r78/three',
     },
     shim: {
         // See require.js docs for how to define dependencies that
@@ -752,7 +754,8 @@ Pass in {<br>
                 fontName : options.fontName ? options.fontName : "helvetiker",
                 fontWeight : options.fontWeight ? options.fontWeight : "regular",
             }
-            //console.log("fontOpts:", fontOpts);
+            
+            console.log("fontOpts:", fontOpts);
             
             this.loadFont(fontOpts, function(font) {
                 
@@ -966,7 +969,8 @@ Pass in {<br>
 			var url = '' +
 			    //'https://i2dcui.appspot.com/js/three/fonts/' + 
 			    //'https://i2dcui.appspot.com/slingshot?url=http://threejs.org/examples/fonts/' +
-			    'https://i2dcui.appspot.com/slingshot?url=https://raw.githubusercontent.com/mrdoob/three.js/master/examples/fonts/' +
+			 //   'https://i2dcui.appspot.com/slingshot?url=https://raw.githubusercontent.com/mrdoob/three.js/master/examples/fonts/' +
+			    'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/fonts/' +
 			    fontOpts.fontName + '_' + 
 			    fontOpts.fontWeight + 
 			 //   '.typeface.js';
@@ -981,6 +985,18 @@ Pass in {<br>
 
     			console.log("about to get font url:", url);
     // 			debugger;
+    
+                // use my own font loader instead of three's
+                $.getJSON( url, function( data ) {
+                    console.log("data after load font:", data);
+                    var font = new THREE.Font( data );
+    				console.log("loaded font:", font);
+    				that.fontLoaded[url] = font;
+    				callback(font);   
+                });
+                
+                // three's that started not working in later versions
+                /*
     			loader.load( url, function ( response ) {
     				var font = response;
     				console.log("loaded font:", font);
@@ -988,6 +1004,7 @@ Pass in {<br>
     				callback(font);
     				//refreshText();
     			});
+    			*/
             }
 		},
 		
