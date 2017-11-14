@@ -506,6 +506,22 @@
                     </div>
 
                     <div class="form-group" xstyle="padding-left:18px;">
+                        <span xstyle="font-size:11px;" class="element-clearanceheight hidden" >Clearance Height</span>
+                        <div class="input-group element-clearanceheight hidden">
+                            <input type="number" min="0" max="100000" step="1" class="form-control input-clearanceheight" value="5" placeholder="Enter clearance height">
+                            <div class="input-group-addon">mm</div>
+                        </div>
+                        <span xstyle="font-size:11px;" class="element-milldepthcut hidden" >Depth of Cut</span>
+                        <div class="input-group element-milldepthcut hidden">
+                            <input type="number" min="-10000" max="100000" step="1" class="form-control input-milldepthcut" value="-1" placeholder="Enter depth of cut">
+                            <div class="input-group-addon">mm</div>
+                        </div>
+                        <span xstyle="font-size:11px;" class="element-millfeedrateplunge hidden" >Depth of Cut</span>
+                        <div class="input-group element-millfeedrateplunge hidden">
+                            <input type="number" min="-10000" max="100000" step="10" class="form-control input-millfeedrateplunge" value="80" placeholder="Enter plunge feedrate">
+                            <div class="input-group-addon">mm/min</div>
+                        </div>
+                        
                         <span xstyle="font-size:11px;">Feedrate During Mill/Laser</span>
                         <div class="input-group">
                             <input type="number" min="0" max="50000" step="10" class="form-control input-feedrate" value="200" placeholder="Enter feedrate">

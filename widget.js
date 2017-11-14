@@ -422,6 +422,11 @@ Pass in {<br>
             // on change
             $('#' + this.id + ' input').change(this.onChange.bind(this));
             $('#' + this.id + ' select').change(this.onChange.bind(this));
+
+            // send gcode to workspace
+            $('#' + this.id + ' .btn-sendgcodetows').click(this.sendGcodeToWorkspace.bind(this));
+
+            
         },
         isChanging: false,
         onChange: function() {
@@ -471,6 +476,10 @@ Pass in {<br>
             this.options["mode"] = $('#' + this.id + ' input[name=com-chilipeppr-widget-font2gcode-mode]:checked').val();
             this.options["laseron"] = $('#' + this.id + ' input[name=com-chilipeppr-widget-font2gcode-laseron]:checked').val();
             this.options["feedrate"] = $('#' + this.id + ' .input-feedrate').val();
+            this.options["millclearanceheight"] = parseFloat($('#' + this.id + ' .input-clearanceheight').val());
+            this.options["milldepthcut"] = parseFloat($('#' + this.id + ' .input-milldepthcut').val());
+            this.options["millfeedrateplunge"] = parseFloat($('#' + this.id + ' .input-millfeedrateplunge').val());
+            
             
             // alignment values
             this.options["xoffset"] = parseFloat($('#' + this.id + ' .input-x').val());
@@ -480,13 +489,43 @@ Pass in {<br>
             
             if (this.options.mode == "laser") {
                  $('#' + this.id + ' .mode-laser').removeClass("hidden");
+
+                $('#' + this.id + ' .element-clearanceheight').addClass("hidden");
+                $('#' + this.id + ' .element-milldepthcut').addClass("hidden");
+                $('#' + this.id + ' .element-millfeedrateplunge').addClass("hidden");
                  
             } else {
+                // the mnode is milling
                 $('#' + this.id + ' .mode-laser').addClass("hidden");
+                
+                $('#' + this.id + ' .element-clearanceheight').removeClass("hidden");
+                $('#' + this.id + ' .element-milldepthcut').removeClass("hidden");
+                $('#' + this.id + ' .element-millfeedrateplunge').removeClass("hidden");
+                
             }
             
             this.saveOptionsLocalStorage();
         },
+        sendGcodeToWorkspace: function(){
+            var info = {
+                name: "Font to Gcode for " + this.generatedGcodeForText, 
+                lastModified: new Date()
+            };
+            // grab gcode from textarea
+            var gcodetxt = $('#' + this.id + " .gcode").val();
+            
+            if (gcodetxt.length < 10) {
+                chilipeppr.publish("/com-chilipeppr-elem-flashmsg/flashmsg", "Error Sending Gcode", "It looks like you don't have any Gcode to send to the workspace. Huh?", 5 * 1000);
+                return;
+            }
+            
+            // send event off as if the file was drag/dropped
+            chilipeppr.publish("/com-chilipeppr-elem-dragdrop/ondropped", gcodetxt, info);
+            
+            chilipeppr.publish("/com-chilipeppr-elem-flashmsg/flashmsg", "Sent Gcode to Workspace", "Sent your Font2Gcode to the workscape. Close the widget to see it.");
+            
+        },
+        generatedGcodeForText: "",
         /**
          * Iterate over the text3d that was generated and create
          * Gcode to mill/cut the three.js object.
@@ -505,6 +544,7 @@ Pass in {<br>
             
             var txt = "not set in userData.text";
             if ('text' in grp.userData) txt = grp.userData.text;
+            this.generatedGcodeForText = txt;
             var align = "not set";
             var size = "not set";
             if ('settings' in grp.userData) {
